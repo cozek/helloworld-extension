@@ -35,7 +35,11 @@ export function activate(context: vscode.ExtensionContext) {
 function helloworldHTML() {
 	return `
 		<!DOCTYPE html>
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		>
 		<html>
+		
 			<body>
 				<h1>Hello World!</h1>
 			</body>
@@ -46,6 +50,9 @@ function helloworldHTML() {
 function noSMIFoundHTML() {
 	return `
 		<!DOCTYPE html>
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		>
 		<html>
 			<body>
 				<h1>No Nvidia-SMI installed</h1>
@@ -111,16 +118,45 @@ function generateHTML(){
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="color-scheme" content="dark">
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		>
 		<title>NVIDIA SMI Data</title>
 	</head>
 	<body>
+		<main class="container">
 		<h1>NVIDIA SMI Data</h1>
-		${htmlTable0}
-		${htmlTable1}
+			${htmlTable0}
+			${htmlTable1}
+		</main>
 	</body>
 	</html>
 	`;
-	return htmlContent;
+
+	const pico = `
+	<!doctype html>
+	<html lang="en" data-theme="light">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="light dark">
+		<link rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+		>
+		<title>Hello world!</title>
+	</head>
+	<body>
+		<main class="container" data-theme="light">
+		<h1>Hello world!</h1>
+		${htmlTable0}
+		${htmlTable1}
+
+		</main>
+	</body>
+	</html>
+	`;
+	return pico;
 }
 
 

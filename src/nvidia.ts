@@ -15,18 +15,6 @@ export function isNvidiaSmiAvailable(): Promise<boolean> {
     });
 }
 
-export interface NvidiaSmiData {
-    user_name: string;
-    pid: number;
-    GPU_ID: number;
-    used_gpu_memory: number;
-}
-
-export interface GpuCountData {
-    user_name: string;
-    used_gpu_memory: number;
-    GPU_Count: number;
-}
 
 export function readNvidiaSmi(): any[] {
     try {
@@ -68,17 +56,17 @@ export function readNvidiaSmi(): any[] {
 
 
 // Example usage
-isNvidiaSmiAvailable().then(isAvailable => {
-    if (isAvailable) {
-        console.log('nvidia-smi is available on this system.');
+// isNvidiaSmiAvailable().then(isAvailable => {
+//     if (isAvailable) {
+//         console.log('nvidia-smi is available on this system.');
 
-        const dfs = readNvidiaSmi();
+//         const dfs = readNvidiaSmi();
 
-        console.table(dfs[0]);
-        // console.table(dfs[1]);
+//         // console.table(dfs[0]);
+//         // console.table(dfs[1]);
 
-    } else {
-        console.log('nvidia-smi is not available on this system.');
-    }
-});
+//     } else {
+//         console.log('nvidia-smi is not available on this system.');
+//     }
+// });
 

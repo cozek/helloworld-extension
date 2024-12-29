@@ -7,37 +7,27 @@ import * as nvidia from './nvidia';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	
+	const cssPath = vscode.Uri.joinPath(context.extensionUri, 'media', 'pico.min.css');
+    // const cssUri = cssPath.with({ scheme: 'vscode-resource' });
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "helloworld" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('helloworld.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from helloworld2!');
-	});
-
-	context.subscriptions.push(disposable);
-	var provider = new SimpleSidebarProvider();
+	var provider = new SimpleSidebarProvider(context.extensionUri,);
 	var webview = vscode.window.registerWebviewViewProvider(
-		'exampleView.view',
+		'smiSidebar.view',
 		provider,
 	  );
 	context.subscriptions.push(
-		webview
+		webview,
+		
 	  );
 }
 
 
-function noSMIFoundHTML() {
+function noSMIFoundHTML(cssUri: vscode.Uri) {
 	return `
 		<!DOCTYPE html>
 		<link rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+			href="pico.min.css"
 		>
 		<html>
 			<body>
@@ -48,27 +38,25 @@ function noSMIFoundHTML() {
 }
 
 class SimpleSidebarProvider implements vscode.WebviewViewProvider {
+	constructor(public readonly extensionUri: vscode.Uri) {}
+
 	resolveWebviewView(webviewView: vscode.WebviewView): void {
-        // nvidia.isNvidiaSmiAvailable().then(isAvailable => {
-        //     if (isAvailable) {
-        //         webviewView.webview.html = generateHTML();
+		webviewView.webview.options = {
+            enableScripts: true,
+            localResourceRoots: [vscode.Uri.joinPath(this.extensionUri, 'media')]
+        };
 
-        //     } else {
-        //         webviewView.webview.html = noSMIFoundHTML();
-        //     }
-        // });
+		const cssUri = webviewView.webview.asWebviewUri(vscode.Uri.joinPath(this.extensionUri, 'media', 'pico.min.css'));
 
-		setInterval(()=>{
-			nvidia.isNvidiaSmiAvailable().then(isAvailable => {
-				if (isAvailable) {
-					webviewView.webview.html = generateHTML();
-	
-				} else {
-					webviewView.webview.html = noSMIFoundHTML();
-				}
-			});
-		},5000); // updates every 5 seconds
-		
+        nvidia.isNvidiaSmiAvailable().then(isAvailable => {
+            if (isAvailable) {
+                setInterval(()=>{
+					webviewView.webview.html = generateHTML(cssUri);
+				},5000); // updates every 5 seconds
+            } else {
+                webviewView.webview.html = noSMIFoundHTML(cssUri);
+            }
+        });
 		// nvidia.readNvidiaSmi().then(out => {
 		// 	console.table(out[0]);
 		// 	console.table(out[1]);
@@ -101,7 +89,7 @@ function generateHtmlTable(data: any[]): string {
     return table;
 }
 
-function generateHTML(){
+function generateHTML(cssUri: vscode.Uri): string {
 	const dfs = nvidia.readNvidiaSmi();
 	const htmlTable0 = generateHtmlTable(dfs[0]);
 	// const htmlTable1 = generateHtmlTable(dfs[1]);
@@ -114,7 +102,7 @@ function generateHTML(){
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="color-scheme" content="light dark">
 		<link rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+			href="${cssUri}"
 		>
 		<title>NVIDIA-SMI GPU Memory Info</title>
 	</head>

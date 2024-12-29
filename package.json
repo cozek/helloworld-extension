@@ -1,6 +1,6 @@
 {
-  "name": "helloworld",
-  "displayName": "helloworld",
+  "name": "simple-smi",
+  "displayName": "simple-smi",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -12,26 +12,20 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "helloworld.helloWorld",
-        "title": "Hello World"
-      }
-    ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "exampleSidebar",
-          "title": "Example Sidebar",
+          "id": "smiSidebar",
+          "title": "Simple SMI",
           "icon": "media/nvidia-svgrepo-com.svg"
         }
       ]
     },
     "views": {
-      "exampleSidebar": [
+      "smiSidebar": [
         {
-          "id": "exampleView.view",
-          "name": "Example View",
+          "id": "smiSidebar.view",
+          "name": "GPU Info",
           "type": "webview"
         }
       ]

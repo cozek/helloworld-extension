@@ -1,8 +1,21 @@
 {
   "name": "simple-smi",
-  "displayName": "simple-smi",
-  "description": "",
+  "displayName": "Simple SMI",
+  "description": "This extension shows the current GPU usage in the sidebar. Requires the nvidia-smi tool to be present.",
   "version": "0.0.1",
+  "publisher": "cozek-dev",
+  "author": {
+		"name": "cozek"
+	},
+  "icon": "media/icons8-nvidia-500.png",
+  "galleryBanner": {
+		"color": "#C80000",
+		"theme": "dark"
+	},
+  "repository": {
+		"type": "git",
+		"url": "https://github.com/cozek/simple-smi"
+	},
   "engines": {
     "vscode": "^1.96.0"
   },
